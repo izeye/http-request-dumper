@@ -1,5 +1,6 @@
 package com.izeye.httprequestdumper;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -8,6 +9,7 @@ import org.junit.Test;
 public class HttpRequestDumperTests {
 	
 	@Test
+	@Ignore
 	public void test() {
 		new HttpRequestDumper(18080).run();
 	}
