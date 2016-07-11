@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketAddress;
 
 /**
  * Created by izeye on 15. 9. 23..
@@ -62,6 +63,9 @@ public class HttpRequestDumper {
 					InputStream is = socket.getInputStream();
 					OutputStream os = socket.getOutputStream()
 			) {
+				SocketAddress remoteSocketAddress = socket.getRemoteSocketAddress();
+				System.out.println("Connected from :" + remoteSocketAddress);
+				
 				byte[] bytes = receiveRequest(is);
 				logRequest(bytes);
 
