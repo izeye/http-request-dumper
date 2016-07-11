@@ -4,9 +4,9 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.net.SocketAddress;
 
 /**
  * Created by izeye on 15. 9. 23..
@@ -63,15 +63,16 @@ public class HttpRequestDumper {
 					InputStream is = socket.getInputStream();
 					OutputStream os = socket.getOutputStream()
 			) {
-				SocketAddress remoteSocketAddress = socket.getRemoteSocketAddress();
-				System.out.println("Connected from :" + remoteSocketAddress);
+				InetSocketAddress remoteSocketAddress =
+						(InetSocketAddress) socket.getRemoteSocketAddress();
+				String remoteIpAddress = remoteSocketAddress.getAddress().getHostAddress();
 				
 				byte[] bytes = receiveRequest(is);
-				logRequest(bytes);
+				logRequest(remoteIpAddress, bytes);
 
 				sendResponse(os, bytes);
-			} catch (IOException e) {
-				throw new RuntimeException(e);
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
 			}
 		}
 
@@ -96,8 +97,10 @@ public class HttpRequestDumper {
 					&& bytes[bytes.length - 1] == LF;
 		}
 
-		private void logRequest(byte[] bytes) {
-			System.out.printf("Request:%n-----%n%s%n-----%n%n", new String(bytes));
+		private void logRequest(String ipAddress, byte[] bytes) {
+			System.out.printf(
+					"Request:%n-----%nConnected from %s%n-----%n%s%n-----%n%n",
+					ipAddress, new String(bytes));
 		}
 
 		private void sendResponse(OutputStream os, byte[] bytes) throws IOException {
