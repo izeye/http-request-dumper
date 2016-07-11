@@ -1,6 +1,3 @@
 # Created by .gitignore support plugin (hsz.mobi)
-gradlew
 http-request-dumper.iml
-gradlew.bat
 .idea
-gradle
